@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Tracker</title>
+    <style>
+        p { 
+            /* стили Параграфа. В данном случае в параграфе находится инпут и вывод */
+            font-size: 120%;
+            font-family: Montserrat;
+        }
+        span::selection {
+            color: #fff;
+            background: #21212c;
+        }
+        ::selection {
+            color: #000;
+            background: #8c8c9b;
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            /* display: none; <- Crashes Chrome on hover */
+            -webkit-appearance: none;
+            margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+        }
+        input[type="number"] {
+            font-family: inherit;
+            font-size: inherit;
+            line-height: inherit;
+        }
+        #minutes {
+            /* стили инпута */
+            width: auto;
+            height: 30px;
+            /* margin: 20px;
+            padding: 5px 0 0 0; */
+            font-size: 20px;
+            margin-right: 20px;
+            border: 1px;
+        }
+        .hello {
+            /* display: block; */
+            /* width: 100%; */
+            /* height: calc(2.25rem + 2px); */
+            padding: 0.375rem 0.75rem;
+            font-family: inherit;
+            /* font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5; */
+            color: #212529;
+            /* background-color: #fff; */
+            background-color: #eeeeee;
+            background-clip: padding-box;
+            border: 1px solid #bdbdbd;
+            border-radius: 0.25rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        .hello::placeholder {
+            color: #212529;
+            opacity: 0.4;
+        }
+        .hello:focus {
+            color: #212529;
+            background-color: #fff;
+            border-color: #1d1d1d;
+            outline: 0;
+            box-shadow: 0 0 0.8rem rgb(106, 106, 106);
+        }
+        .hello:disabled,
+        .hello[readonly] {
+            background-color: #f5f5f5;
+            opacity: 1;
+        }
+    </style>
+    
+</head>
+
+<body bgcolor="#8a8a8a" style="width: 500px; height: 35px; margin-top: 30px; margin-left: 30px;">
+    
+    <form action="">    
+        <p>
+            <input id="minutes" type="number" value="mins" placeholder="введи значение" class="hello">
+            <big>
+                <span id="result"></span>   <!-- вывод конвертации -->
+            </big>
+        </p>
+                    <!-- 
+                        Заметка: сделать кнопку копирования в буфер обмена.
+                        Логика такая: ввести значение в инпут -> получить конвертацию -> нажать на полученное значение -> значение скопировано в буфер
+                    -->
+    </form>
+
+
+    <script>
+
+        const minutes = document.getElementById("minutes");
+        const result = document.getElementById("result");
+        // Эта функция переводит минуты в часы в формате xx ч xx м где xx - число
+        
+        function getTimeFromMins(e) {
+            let mins = e.target.value;
+            let hours = Math.trunc(mins/60);
+            let minutes2 = mins % 60;
+            result.innerHTML = `${hours}ч${minutes2}м`;
+            // console.log("getTimeFromMins", mins);    // можно удалить
+        };
+        // console.log(minutes.value, "minutes");   // это здесь для отладки
+        minutes.addEventListener("input", getTimeFromMins)
+
+    </script>
+
+
+</body>
+</html>
