@@ -3,9 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Time Tracker</title>
+    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1">
+    <meta content="true" name="HandheldFriendly">
+    <meta content="width" name="MobileOptimized">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <title>converter</title>
     <style>
+        html {
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
         p { 
             /* стили Параграфа. В данном случае в параграфе находится инпут и вывод */
             font-size: 120%;
@@ -26,6 +33,7 @@
             margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
         }
         input[type="number"] {
+            -moz-appearance: textfield; /* скрывает стрелки в инпуте с типом number в Firefox */
             font-family: inherit;
             font-size: inherit;
             line-height: inherit;
@@ -74,14 +82,14 @@
             opacity: 1;
         }
     </style>
-    
 </head>
-
-<body bgcolor="#8a8a8a" style="width: 500px; height: 35px; margin-top: 30px; margin-left: 30px;">
-    
+<body bgcolor="#8a8a8a" style="width: 300px; height: 35px; margin-top: 30px; margin-left: 30px;">   
     <form action="">    
         <p>
             <input id="minutes" type="number" value="mins" placeholder="введи значение" class="hello">
+        </p>
+        <br>
+        <p>
             <big>
                 <span id="result"></span>   <!-- вывод конвертации -->
             </big>
@@ -91,7 +99,6 @@
                         Логика такая: ввести значение в инпут -> получить конвертацию -> нажать на полученное значение -> значение скопировано в буфер
                     -->
     </form>
-
 
     <script>
 
@@ -110,7 +117,6 @@
         minutes.addEventListener("input", getTimeFromMins)
 
     </script>
-
-
+<!--  вторая версия: поправил ширину, скрыл стрелки инпут в Firefox -->
 </body>
 </html>
