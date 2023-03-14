@@ -1,4 +1,4 @@
-# lazarevr.github.io
+# Конвертер минут
 
 1. Открыть https://lazarevr.github.io
 2. Ввести количество минут
