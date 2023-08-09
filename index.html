@@ -7,6 +7,7 @@
     <meta content="true" name="HandheldFriendly">
     <meta content="width" name="MobileOptimized">
     <meta content="yes" name="apple-mobile-web-app-capable">
+    <link type="image/x-icon" href="/favicon.ico" rel="icon">
     <title>converter</title>
     <style>
         html {
@@ -16,7 +17,7 @@
         p { 
             /* стили Параграфа. В данном случае в параграфе находится инпут и вывод */
             font-size: 120%;
-            font-family: Montserrat;
+            font-family: "Montserrat", sans-serif;
         }
         span::selection {
             color: #fff;
@@ -99,12 +100,9 @@
                         Логика такая: ввести значение в инпут -> получить конвертацию -> нажать на полученные данные -> данные скопированы в буфер
                     -->
     </form>
-
     <script>
-
         const minutes = document.getElementById("minutes");
         const result = document.getElementById("result");
-
         // Эта функция переводит минуты в часы в формате 'XXчXXм' где XX - число      
         function getTimeFromMins(e) {
             let mins = e.target.value;
@@ -115,8 +113,7 @@
         };
         // console.log(minutes.value, "minutes");   // это здесь для отладки
         minutes.addEventListener("input", getTimeFromMins)
-
     </script>
-<!--  третья версия: добавил постоянное отображение '0ч0м' при отсутствии данных в инпуте -->
+<!--  четвёртая версия: добавлена favicon -->
 </body>
 </html>
