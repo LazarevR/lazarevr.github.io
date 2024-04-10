@@ -40,7 +40,6 @@
             line-height: inherit;
         }
         #minutes {
-            /* стили инпута */
             width: auto;
             height: 30px;
             /* margin: 20px;
@@ -59,7 +58,6 @@
             font-weight: 400;
             line-height: 1.5; */
             color: #212529;
-            /* background-color: #fff; */
             background-color: #eeeeee;
             background-clip: padding-box;
             border: 1px solid #bdbdbd;
@@ -82,38 +80,86 @@
             background-color: #f5f5f5;
             opacity: 1;
         }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .result {
+            cursor: pointer;
+            color: #000;
+            text-decoration: none;
+        }
+		li {
+			margin-bottom: 5px;
+			font-family: "Montserrat", sans-serif;
+			font-size: 16px;
+			color: #606060;
+			border-bottom: 1px solid #808080;
+			width: 30%;
+		}
+
     </style>
 </head>
-<body bgcolor="#8a8a8a" style="width: 300px; height: 35px; margin-top: 30px; margin-left: 30px;">   
-    <form action="">    
+<body bgcolor="#8a8a8a" style="width: 300px; margin-top: 30px; margin-left: 30px;">   
+    <form id="converterForm">    
         <p>
             <input id="minutes" type="number" value="mins" placeholder="введи значение" class="hello">
         </p>
         <br>
         <p>
             <big>
-                <span id="result">0ч0м</span>   <!-- вывод конвертации -->
+                <span id="result" class="result">0ч0м</span>   <!-- вывод конвертации -->
             </big>
         </p>
-                    <!-- 
-                        Заметка: сделать кнопку копирования в буфер обмена.
-                        Логика такая: ввести значение в инпут -> получить конвертацию -> нажать на полученные данные -> данные скопированы в буфер
-                    -->
+        <ul id="history"></ul> <!-- список для отображения истории -->
     </form>
     <script>
+        const form = document.getElementById("converterForm");
         const minutes = document.getElementById("minutes");
         const result = document.getElementById("result");
-        // Эта функция переводит минуты в часы в формате 'XXчXXм' где XX - число      
-        function getTimeFromMins(e) {
-            let mins = e.target.value;
+        const historyList = document.getElementById("history");
+        let typingTimer; // Таймер для задержки сохранения
+
+        // При отправке формы вычисляем и сохраняем результат
+        form.addEventListener("submit", function(event) {
+            event.preventDefault(); // Отменяем стандартное действие отправки формы
+            calculateAndSave();
+        });
+
+        // Функция для вычисления и сохранения результата
+        function calculateAndSave() {
+            let mins = minutes.value;
             let hours = Math.trunc(mins/60);
-            let minutes2 = mins % 60;
-            result.innerHTML = `${hours}ч${minutes2}м`;
-            // console.log("getTimeFromMins", mins);    // можно удалить
+            let totalMins = mins % 60;
+            result.textContent = `${hours}ч${totalMins}м`;
+
+            // Добавляем значение в историю на странице
+            const historyItem = document.createElement("li");
+            historyItem.textContent = `${hours}ч${totalMins}м`;
+            historyList.appendChild(historyItem);
+
+            // Сохраняем введенное значение в localStorage
+            localStorage.setItem("savedMinutes", mins);
         };
-        // console.log(minutes.value, "minutes");   // это здесь для отладки
-        minutes.addEventListener("input", getTimeFromMins)
+
+        // При загрузке страницы проверяем, есть ли сохраненное значение в localStorage и устанавливаем его в поле ввода
+        window.onload = function() {
+            if (localStorage.getItem("savedMinutes")) {
+                minutes.value = localStorage.getItem("savedMinutes");
+                calculateAndSave();
+            }
+        };
+
+        // При клике на результат копируем его в буфер обмена
+        result.addEventListener("click", function() {
+            const selection = window.getSelection();
+            const range = document.createRange();
+            range.selectNodeContents(result);
+            selection.removeAllRanges();
+            selection.addRange(range);
+            document.execCommand('copy');
+            selection.removeAllRanges();
+        });
     </script>
-<!--  четвёртая версия: добавлена favicon -->
 </body>
 </html>
