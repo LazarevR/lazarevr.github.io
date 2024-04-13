@@ -15,10 +15,11 @@
             -webkit-text-size-adjust: 100%;
             text-size-adjust: 100%;
         }
+		body {
+			font-family: "Montserrat", sans-serif;
+		}
         p { 
-            /* стили Параграфа. В данном случае в параграфе находится инпут и вывод */
             font-size: 120%;
-            font-family: "Montserrat", sans-serif;
         }
         span::selection {
             color: #fff;
@@ -43,21 +44,13 @@
         #minutes {
             width: auto;
             height: 30px;
-            /* margin: 20px;
-            padding: 5px 0 0 0; */
             font-size: 20px;
             margin-right: 20px;
             border: 1px;
         }
         .hello {
-            /* display: block; */
-            /* width: 100%; */
-            /* height: calc(2.25rem + 2px); */
             padding: 0.375rem 0.75rem;
             font-family: inherit;
-            /* font-size: 1rem;
-            font-weight: 400;
-            line-height: 1.5; */
             color: #212529;
             background-color: #eeeeee;
             background-clip: padding-box;
@@ -92,13 +85,33 @@
         }
 		li {
 			margin-bottom: 5px;
-			font-family: "Montserrat", sans-serif;
 			font-size: 16px;
 			color: #606060;
 			border-bottom: 1px solid #808080;
 			width: 30%;
 		}
-
+		.popup {
+			position: absolute;
+			background-color: unset;
+			font-size: 15px;
+			color: #606060;
+			border: 1px dotted #606060;
+			border-radius: 20px;
+			padding: 5px;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+			pointer-events: none; /* Делаем попап недоступным для нажатий */
+			animation: fadeOut 1.8s forwards; /* Применяем CSS анимацию для исчезновения */
+		}
+		/* CSS анимация для исчезновения */
+		@keyframes fadeOut {
+			from {
+				opacity: 1;
+        }
+			to {
+				opacity: 0;
+				visibility: hidden;
+			}
+		}
     </style>
 </head>
 <body bgcolor="#8a8a8a" style="width: 300px; margin-top: 30px; margin-left: 30px;">   
@@ -151,16 +164,36 @@
             }
         };
 
-        // При клике на результат копируем его в буфер обмена
-        result.addEventListener("click", function() {
-            const selection = window.getSelection();
-            const range = document.createRange();
-            range.selectNodeContents(result);
-            selection.removeAllRanges();
-            selection.addRange(range);
-            document.execCommand('copy');
-            selection.removeAllRanges();
-        });
+		// При клике на результат копируем его в буфер обмена
+		result.addEventListener("click", function() {
+			const selection = window.getSelection();
+			const range = document.createRange();
+			range.selectNodeContents(result);
+			selection.removeAllRanges();
+			selection.addRange(range);
+			document.execCommand('copy');
+			selection.removeAllRanges();
+
+        // Создаем всплывающий попап
+			const popup = document.createElement("div");
+			popup.textContent = "скопировано!";
+			popup.classList.add("popup"); // добавляем класс для стилизации попапа
+			result.appendChild(popup); // добавляем попап в результат
+
+        // Устанавливаем позицию попапа над элементом ввода
+			const rect = result.getBoundingClientRect();
+			popup.style.top = (rect.top - popup.offsetHeight - 10) + "px"; // позиция сверху от верхней границы элемента с небольшим отступом
+			popup.style.left = rect.left + "px"; // позиция слева от левой границы элемента
+
+        // Через некоторое время добавляем класс для анимации и удаления попапа
+			setTimeout(function() {
+				popup.classList.add("fadeOut");
+            // Через 1 секунду удаляем попап
+				setTimeout(function() {
+					result.removeChild(popup);
+				}, 1000);
+			}, 1000); // таймер для добавления класса через 1 секунду
+		});
     </script>
 </body>
 </html>
